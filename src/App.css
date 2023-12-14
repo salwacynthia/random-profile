@@ -16,7 +16,7 @@ body {
 }
 
 .container {
-  background-color: #ca0f0f; /* White Background */
+  background-color: #f3ecec; 
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(228, 34, 34, 0.1);
@@ -48,6 +48,7 @@ body {
 .buttons {
   display: flex;
   flex-direction: column;
+  margin-left: auto;
 }
 
 .profile p {
@@ -58,6 +59,8 @@ body {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid #ccc;
+  margin-right: auto;
+
 }
 
 

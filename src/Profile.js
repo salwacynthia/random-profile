@@ -18,6 +18,7 @@ const Profile = ({ profile, onDelete, onToggleDetails }) => {
         <div className="details">
           <p>Email: {profile.email}</p>
           <p>Gender: {profile.gender}</p>
+          {/* Add more details as needed */}
         </div>
       )}
     </div>
