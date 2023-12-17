@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Profile from './Profile';
@@ -6,30 +5,52 @@ import './App.css';
 
 const App = () => {
   const [profiles, setProfiles] = useState([]);
-  const [fetchCount, setFetchCount] = useState(1);
+  const [loadingAllowed, setLoadingAllowed] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const profilesPerPage = 5;
+  const profilesToShow = 5;
+
+  // const fetchProfile = async () => {
+  //   try {
+  //     const response = await axios.get('https://randomuser.me/api/');
+  //     const newProfile = {
+  //       ...response.data.results[0],
+  //       id: profiles.length + 1,
+  //       showDetails: false,
+  //     };
+  //     setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
+  //   } catch (error) {
+  //     console.error('Error fetching profile:', error);
+  //   }
+  // };
+
+
+  const fetchProfile = async () => {
+    try {
+      const response = await axios.get('https://randomuser.me/api/');
+      const newProfile = {
+        ...response.data.results[0],
+        id: profiles.length + 1,
+        showDetails: false,
+      };
+      setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      // Reset loadingAllowed after fetching a profile
+      setLoadingAllowed(false);
+    }
+  };
+  
 
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const response = await axios.get(
-          `https://randomuser.me/api/?results=${fetchCount}`
-        );
-        const newProfiles = response.data.results.map((profile, index) => ({
-          ...profile,
-          id: index + 1,
-          showDetails: false,
-        }));
-        setProfiles(newProfiles);
-      } catch (error) {
-        console.error('Error fetching profiles:', error);
-      }
-    };
-
-    fetchProfiles();
-  }, [fetchCount]);
+    if (loadingAllowed) {
+      fetchProfile();
+    }
+  }, [loadingAllowed]);
 
   const handleDelete = (id) => {
-    setProfiles(profiles.filter((profile) => profile.id !== id));
+    setProfiles((prevProfiles) => prevProfiles.filter((profile) => profile.id !== id));
   };
 
   const handleToggleDetails = (id) => {
@@ -41,14 +62,23 @@ const App = () => {
   };
 
   const handleRenewProfiles = () => {
-    setFetchCount(fetchCount + 1);
+    setLoadingAllowed(true);
   };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const indexOfLastProfile = currentPage * profilesPerPage;
+  const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+  const currentProfiles = profiles.slice(indexOfFirstProfile, indexOfLastProfile);
 
   return (
     <div className="app">
       <h1>Search Random Profiles</h1>
       <button onClick={handleRenewProfiles}>Add Profile</button>
-      {profiles.map((profile) => (
+
+      {currentProfiles.map((profile) => (
         <Profile
           key={profile.id}
           profile={profile}
@@ -56,6 +86,16 @@ const App = () => {
           onToggleDetails={handleToggleDetails}
         />
       ))}
+
+      {profiles.length > profilesToShow && (
+        <div className="pagination">
+          {Array.from({ length: Math.ceil(profiles.length / profilesPerPage) }, (_, index) => (
+            <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
