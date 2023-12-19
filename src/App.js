@@ -37,7 +37,6 @@ const App = () => {
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
-      // Reset loadingAllowed after fetching a profile
       setLoadingAllowed(false);
     }
   };
@@ -50,15 +49,19 @@ const App = () => {
   }, [loadingAllowed]);
 
   const handleDelete = (id) => {
-    setProfiles((prevProfiles) => prevProfiles.filter((profile) => profile.id !== id));
+    setProfiles((prevProfiles) => {
+       return prevProfiles.filter((profile) => profile.id !== id);
+    })
   };
 
   const handleToggleDetails = (id) => {
     setProfiles((prevProfiles) =>
-      prevProfiles.map((profile) =>
-        profile.id === id ? { ...profile, showDetails: !profile.showDetails } : profile
-      )
-    );
+    prevProfiles.map((profile) =>
+      profile.id === id
+        ? { ...profile, showDetails: !profile.showDetails }
+        : profile
+    )
+  );
   };
 
   const handleRenewProfiles = () => {

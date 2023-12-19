@@ -1,8 +1,13 @@
-
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(to right, #4aa9e8, #c1d0df); 
+  background: linear-gradient(to right, #d3e440, #ececaa); 
+}
+
+@media (max-width: 768px) {
+  .profile {
+    width: 100%;
+  }
 }
 
 .app {
@@ -15,7 +20,6 @@ body {
 }
 
 .container {
-  background-color: #f3ecec; 
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(228, 34, 34, 0.1);
@@ -23,19 +27,26 @@ body {
 }
 
 .profile {
+  background-color: rgb(211, 228, 228);
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
   align-items: center;
   border: 1px solid #ccc;
-  margin: 10px;
   padding: 20px;
-  border-radius: 5px;
-  width: 70%;
-  box-sizing: border-box;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+  width: 50%;
+  margin: 10px;
+
 }
-.info-container {
-  display: flex;
-  align-items: center;
+
+.profile:hover {
+  transform: scale(1.05);
+}
+
+.profile:hover .details {
+  opacity: 1;
 }
 
 .profile img {
@@ -45,10 +56,25 @@ body {
   margin-right: 10px;
 }
 
+.info-container {
+  flex-basis: 60%;
+  max-width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+.list{
+  width: 90%;
+  margin: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
 .buttons {
   display: flex;
   flex-direction: column;
-  margin-left: auto;
+  justify-content: space-between;
 }
 
 .profile p {
@@ -59,9 +85,9 @@ body {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid #ccc;
-  margin-right: auto;
-
+  width: 100%;
 }
+
 .pagination {
   display: flex;
   margin-top: 20px;
