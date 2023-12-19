@@ -7,22 +7,8 @@ const App = () => {
   const [profiles, setProfiles] = useState([]);
   const [loadingAllowed, setLoadingAllowed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const profilesPerPage = 5;
-  const profilesToShow = 5;
-
-  // const fetchProfile = async () => {
-  //   try {
-  //     const response = await axios.get('https://randomuser.me/api/');
-  //     const newProfile = {
-  //       ...response.data.results[0],
-  //       id: profiles.length + 1,
-  //       showDetails: false,
-  //     };
-  //     setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
-  //   } catch (error) {
-  //     console.error('Error fetching profile:', error);
-  //   }
-  // };
+  const profilesPerPage = 4;
+  const profilesToShow = 4;
 
 
   const fetchProfile = async () => {
@@ -50,8 +36,13 @@ const App = () => {
 
   const handleDelete = (id) => {
     setProfiles((prevProfiles) => {
-       return prevProfiles.filter((profile) => profile.id !== id);
-    })
+      const updatedProfiles = prevProfiles.filter((profile) => profile.id !== id);
+      if (updatedProfiles.length <= indexOfFirstProfile) {
+        setCurrentPage(1);
+      }
+  
+      return updatedProfiles;
+    });
   };
 
   const handleToggleDetails = (id) => {
